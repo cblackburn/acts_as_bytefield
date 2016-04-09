@@ -1,0 +1,6 @@
+*0.1.1* (April 09, 2016)
+
+* Use absolute value of integers passed in.
+* Refactor some code and specs.
+* Update README with more detailed usage info.
+* Add ruby 2.0.0 to the travis-ci build

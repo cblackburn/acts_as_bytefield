@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cblackburn/acts_as_bytefield.svg?branch=master)](https://travis-ci.org/cblackburn/acts_as_bytefield)
 
-**Version: 0.1.0**
+**Version: 0.1.1**
 
 Use a string column as a bytefield on an ActiveRecord model.
 
