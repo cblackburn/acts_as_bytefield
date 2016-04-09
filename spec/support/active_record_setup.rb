@@ -10,8 +10,6 @@ def setup_db
   ActiveRecord::Schema.define(version: 1) do
     create_table :bytefield_models do |t|
       t.string :my_bytefield
-      t.string :my_other_bytefield
-      t.string :my_arbitrary_string
 
       t.timestamps null: false
     end
@@ -20,6 +18,5 @@ end
 
 class BytefieldModel < ActiveRecord::Base
   include ActsAsBytefield
-  acts_as_bytefield :my_bytefield, keys: [:one, :two, :three]
-  acts_as_bytefield :my_other_bytefield, keys: [:a, :b, :c]
+  acts_as_bytefield :my_bytefield, keys: [:a, :b, :c]
 end

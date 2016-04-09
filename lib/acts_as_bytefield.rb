@@ -13,34 +13,36 @@ module ActsAsBytefield
         "Hash expected, got #{options.class.name}"
       ) unless options.is_a?(Hash) || options.empty?
 
-      unless respond_to?(:bytefields)
-        class_eval { cattr_accessor :bytefields }
-        self.bytefields = {}
-      end
-
+      declare_class_accessors
       column = column.to_sym
       bytefields[column] = create_field_hash(options[:keys])
-      bytefields[column].keys.each do |key|
-        define_bytefield_methods(column, key)
-      end
+      define_bytefield_methods(column)
 
       include ActsAsBytefield::InstanceMethods
     end
 
     private
 
+    def declare_class_accessors
+      return nil if respond_to?(:bytefields)
+      class_eval { cattr_accessor :bytefields }
+      self.bytefields = {}
+    end
+
     def create_field_hash(fields)
       attrs = {}
-      fields.inject(0) do |n, f|
-        attrs[f] = n
-        n += 1
+      fields.inject(0) do |index, key|
+        attrs[key] = index
+        index += 1
       end
       attrs
     end
 
-    def define_bytefield_methods(column, field)
-      define_method(field) { bytefield_value(column, field) }
-      define_method("#{field}=") { |value| set_bytefield_value(column, field, value) }
+    def define_bytefield_methods(column)
+      bytefields[column].keys.each do |key|
+        define_method(key) { bytefield_value(column, key) }
+        define_method("#{key}=") { |value| set_bytefield_value(column, key, value) }
+      end
     end
   end
 
@@ -73,7 +75,7 @@ module ActsAsBytefield
       if value.is_a?(String)
         value.first
       elsif value.is_a?(Fixnum)
-        value.chr
+        value.abs.chr
       else
         fail "#{value} must be a Fixnum or String"
       end
